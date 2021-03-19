@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:async';
 import 'package:flutter_app/model/tblAccount.dart';
 import 'package:flutter_app/util/tblAccount_helper.dart';
@@ -10,6 +14,8 @@ import 'package:flutter_app/Pages/MyRequest.dart';
 import 'package:flutter_app/Pages/ReturnToWork.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 
 class MyAccount extends StatefulWidget {
   final tblAccount empd;
@@ -31,6 +37,8 @@ class MyAccountdetails extends State<MyAccount> {
   List<tblAccount> EmpDetails;
   bool viewVisible = false ;
 
+
+
   void showWidget(){
     setState(() {
       viewVisible = true ;
@@ -48,14 +56,14 @@ class MyAccountdetails extends State<MyAccount> {
 
   @override
   Widget build(BuildContext context) {
+   // test();
     _save();
-    debugPrint("in 1");
+
     tblAccount_helper databaseHelper = tblAccount_helper();
 
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
 
     if (EmpDetails == null) {
-      debugPrint("int 2");
       EmpDetails = List<tblAccount>();
       updateListView();
     }
@@ -1189,7 +1197,6 @@ class MyAccountdetails extends State<MyAccount> {
   }
 
   void _save() async {
-    debugPrint("in save");
     empd = tblAccount('', '', '', '', '', '');
     empd.sgi = "A9548993";
     empd.phone = "9548993";
@@ -1200,6 +1207,28 @@ class MyAccountdetails extends State<MyAccount> {
     int result;
 
     result = await databaseHelper.insertNote(empd);
-    debugPrint(result.toString());
+  }
+
+  void test() async {
+    HttpClient client = new HttpClient();
+    client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+    client.getUrl(Uri.parse("https://sv30601421ap.zh.if.atcsg.net:8384/api/GetlatestRecord1?ID=MIIQA"))
+        .then((HttpClientRequest request) {
+      print('error');
+      return request.close();
+    })
+        .then((HttpClientResponse response) async {
+      // Process the response.
+      response.transform(utf8.decoder).listen((contents) {
+        // handle data
+        List<dynamic> map=json.decode(contents);
+        var tagsJson = jsonDecode(contents)['data'];
+        List<String> tags = tagsJson != null ? List.from(tagsJson) : null;
+
+        print(tags);
+
+      });
+
+    });
   }
 }

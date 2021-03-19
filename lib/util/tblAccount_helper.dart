@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 import 'package:flutter_app/model/tblAccount.dart';
 import 'package:flutter/material.dart';
 class tblAccount_helper {
@@ -38,9 +38,13 @@ class tblAccount_helper {
 
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'campusreturn.db';
-    debugPrint('hi $directory');
+    //Directory directory = await getApplicationDocumentsDirectory();
+   // String path = directory.path + 'campusreturn.db';
+
+    var databasesPath = await getDatabasesPath();
+    String path = p.join(databasesPath, 'campusreturn.db');
+
+   // debugPrint('hi $directory');
     // Open/create the database at a given path
     var notesDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
     return notesDatabase;

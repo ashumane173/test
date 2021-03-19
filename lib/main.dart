@@ -3,6 +3,7 @@ import 'package:flutter_app/screens/note_list.dart';
 import 'package:flutter_app/screens/note_detail.dart';
 import 'package:flutter_app/Menus/navdrawer.dart';
 import 'package:flutter_app/Pages/MyAccount.dart';
+import 'package:flutter_app/Pages/Loginpage.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 void main() => runApp(MyApp());
@@ -27,7 +28,7 @@ class MyHomePage extends StatelessWidget {
    //   appBar: AppBar(
    //     title: Text('App Demo'),
     //  ),
-      body: MyAccount(null),
+      body:  LoginPage(),
 
     );
   }
